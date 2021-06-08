@@ -6,7 +6,7 @@ setInterval(function () {
 // end of current time and date in the jumbotron
 
 // start edit events in time-blocks 
-// on click change time-block into textarea to add events
+    // on click change time-block into textarea to add events
 $(".col-10").on('click', function () {
     //  var to select the existing text
     var text = $(this).text().trim();
@@ -14,11 +14,11 @@ $(".col-10").on('click', function () {
     var textP = $("<textarea>")
         .addClass("textInput")
         .text(text);
-        // add textarea to the dom
+    // add textarea to the dom
     $(this).children('p').replaceWith(textP);
     textP.trigger("focus");
 });
-// change textarea back to p when clicked anywhere else
+    // change textarea back to p when clicked anywhere else
 $(".col-10").on("blur", "textarea", function () {
     var text = $(this).val().trim();
     var p = $("<p>")
@@ -29,22 +29,32 @@ $(".col-10").on("blur", "textarea", function () {
 // end edit events in time-blocks
 
 // start color changing based on time
+    // create a function to iterate thru all event blocks
+var checkTime = function () {
 
-// declare a var that selects the hour from html
-var eventHour = $('.hour').text().trim();
-// format the time to a simpler form
-eventHour = parseInt(moment(eventHour,'h:mm A').format('H'));
-// declare current hour and format to same form as eventHour
-var currentHour = parseInt(moment().format('H'));
-// setting conditions to change the colors of time-blocks
-var eventsBlock = $('.time-block');
+    // declare the id of timeblocks id's
+    var idArr = ['#8', '#9', '#10', '#11', '#12', '#13', '#14', '#15', '#16', '#17'];
+  
+    // declare current hour and format to same form as eventHour
+    var currentHour = parseInt(moment().format('H'));
 
-if(currentHour === eventHour) {
-    eventsBlock.addClass('present').removeClass('past future');
-} else if (currentHour > eventHour ) {
-    eventsBlock.addClass('past').removeClass('present future');
-} else {
-    eventsBlock.addClass('future').removeClass('past present');
-};
+    for (let i = 0; i < idArr.length; i++) {
+        var findTB = $(idArr[i]);
+
+        // declare a var that selects the hour from each time-block and format it
+        var eventHour = findTB.siblings('.hour').text().trim();
+        eventHour = parseInt(moment(eventHour, 'h:mm A').format('H'));
+
+        // setting conditions to change the colors of time-blocks
+        if (currentHour === eventHour) {
+            findTB.addClass('present').removeClass('past future');
+        } else if (currentHour > eventHour) {
+            findTB.addClass('past').removeClass('present future');
+        } else {
+            findTB.addClass('future').removeClass('past present');
+        };
+    }
+}
+checkTime();
 
 // end color changing based on time
