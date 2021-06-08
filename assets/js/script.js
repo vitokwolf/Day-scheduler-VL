@@ -5,6 +5,7 @@ setInterval(function () {
 }, 1000);
 // end of current time and date in the jumbotron
 
+// start edit events in time-blocks 
 // on click change time-block into textarea to add events
 $(".col-10").on('click', function () {
     //  var to select the existing text
@@ -25,3 +26,25 @@ $(".col-10").on("blur", "textarea", function () {
         .text(text);
     $(this).replaceWith(p);
 });
+// end edit events in time-blocks
+
+// start color changing based on time
+
+// declare a var that selects the hour from html
+var eventHour = $('.hour').text().trim();
+// format the time to a simpler form
+eventHour = parseInt(moment(eventHour,'h:mm A').format('H'));
+// declare current hour and format to same form as eventHour
+var currentHour = parseInt(moment().format('H'));
+// setting conditions to change the colors of time-blocks
+var eventsBlock = $('.time-block');
+
+if(currentHour === eventHour) {
+    eventsBlock.addClass('present').removeClass('past future');
+} else if (currentHour > eventHour ) {
+    eventsBlock.addClass('past').removeClass('present future');
+} else {
+    eventsBlock.addClass('future').removeClass('past present');
+};
+
+// end color changing based on time
