@@ -24,7 +24,6 @@ body {
 /* container style start */
   .row {
     white-space: pre-wrap;
-    height: 80px;
   }
 
   /* hour section */
@@ -51,10 +50,10 @@ body {
     }
 
     textarea{
-      background: transparent;
+      background: black;
       border: none;
       resize: none;
-      color: #000000;
+      color: #e0de39;
       padding: 0;
       width: 95%;
       height: 50px;
@@ -67,12 +66,12 @@ body {
 
     .present {
       background-color: #ff6961;
-      color: white;
+      color: black;
     }
 
     .future {
       background-color: #77dd77;
-      color: white;
+      color: #c12d9e;
     }
   /* events section end */
 

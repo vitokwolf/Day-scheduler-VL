@@ -5,38 +5,13 @@ setInterval(function () {
 }, 1000);
 // END of current time and date in the jumbotron
 
-// START edit events in time-blocks 
-// on click change time-block into textarea to add events
-$(".col-10").on('click', function () {
-    //  var to select the existing text
-    var text = $(this).text().trim();
-    // var to create new textarea
-    var textP = $("<textarea>")
-        .addClass("textInput")
-        .text(text);
-    // add textarea to the dom
-    $(this).children('p').replaceWith(textP);
-    textP.trigger("focus");
-});
-
-// change textarea back to p when clicked anywhere else
-$(".col-10").on("blur", "textarea", function () {
-    var text = $(this).val().trim();
-    var p = $("<p>")
-        .addClass("textInput")
-        .text(text);
-    $(this).replaceWith(p);
-});
-// END edit events in time-blocks
-
 // START Color Changing
-// declare the id of timeblocks id's
+    // declare the id of timeblocks id's
 var idArr = ['#8', '#9', '#10', '#11', '#12', '#13', '#14', '#15', '#16', '#17'];
 
-// declare current hour and format to same form as eventHour
+    // declare current hour and format to same form as eventHour
 var currentHour = parseInt(moment().format('H'));
-
-// create a function to iterate thru all event blocks
+    // iterate thru all event blocks
 for (let i = 0; i < idArr.length; i++) {
     var findTB = $(idArr[i]);
 
@@ -48,13 +23,37 @@ for (let i = 0; i < idArr.length; i++) {
     if (currentHour === eventHour) {
         findTB.addClass('present').removeClass('past future');
     } else if (currentHour > eventHour) {
-        findTB.addClass('past').removeClass('present future');
+        findTB.addClass('past').removeClass('present future disabled');
     } else {
         findTB.addClass('future').removeClass('past present');
     };
 }
-
 // END color changing based on time
+
+// START edit events in time-blocks 
+    // on click change time-block into textarea to add events
+$(".disabled").on('click', function () {
+    console.log(this);
+    //  var to select the existing text
+    var text = $(this).text().trim();
+    // var to create new textarea
+    var textP = $("<textarea>")
+        .addClass("textInput")
+        .text(text);
+    // add textarea to the dom
+    $(this).children('p').replaceWith(textP);
+    textP.trigger("focus");
+});
+
+    // change textarea back to p when clicked anywhere else
+$(".disabled").on("blur", "textarea", function () {
+    var text = $(this).val().trim();
+    var p = $("<p>")
+        .addClass("textInput")
+        .text(text);
+    $(this).replaceWith(p);
+});
+// END edit events in time-blocks
 
 // START save on local storage
 $('.saveBtn').on('click', function () {
@@ -85,11 +84,22 @@ var loadEvents = function () {
         $(id).children('p').text(textEl);
     }
 };
-loadEvents();
 // END load local storage
 
 // START auto-reload page
 setTimeout(function () {
     window.location.reload(1);
-}, (1000*60)*15);
-// END auto-reload page 
+}, (1000 * 60) * 15);
+// END auto-reload page
+
+// START clear the events at the end of day
+var clearEvents = function () {
+    if (currentHour < 8 || currentHour > 17) {
+        $('.textInput').text('');
+    }
+};
+// END clear events
+
+loadEvents();
+clearEvents();
+
