@@ -1,11 +1,11 @@
-// renders current date and time in the jumbotron
+// START renders current date and time in the jumbotron
 setInterval(function () {
     var currentDate = moment().format('dddd, MMM/DD/YYYY, hh:mm:ss a ');
     $('#current-day').text(currentDate);
 }, 1000);
-// end of current time and date in the jumbotron
+// END of current time and date in the jumbotron
 
-// start edit events in time-blocks 
+// START edit events in time-blocks 
 // on click change time-block into textarea to add events
 $(".col-10").on('click', function () {
     //  var to select the existing text
@@ -18,6 +18,7 @@ $(".col-10").on('click', function () {
     $(this).children('p').replaceWith(textP);
     textP.trigger("focus");
 });
+
 // change textarea back to p when clicked anywhere else
 $(".col-10").on("blur", "textarea", function () {
     var text = $(this).val().trim();
@@ -26,10 +27,9 @@ $(".col-10").on("blur", "textarea", function () {
         .text(text);
     $(this).replaceWith(p);
 });
-// end edit events in time-blocks
+// END edit events in time-blocks
 
-// start color changing based on time
-
+// START Color Changing
 // declare the id of timeblocks id's
 var idArr = ['#8', '#9', '#10', '#11', '#12', '#13', '#14', '#15', '#16', '#17'];
 
@@ -54,19 +54,42 @@ for (let i = 0; i < idArr.length; i++) {
     };
 }
 
-// end color changing based on time
+// END color changing based on time
 
-// start save on local storage
-var saveButton = function () {
-var text = $(this).siblings('.time-block').text().trim();
-var idCount = $(this).siblings('.time-block').attr('id');
-var timeBlock = {text,idCount};
-eventList = [];
-eventList.push(timeBlock);
-localStorage.setItem('events', JSON.stringify(eventList));
-    console.log(localStorage);
-}
+// START save on local storage
+$('.saveBtn').on('click', function () {
+    // retrieve any info from localStorage
+    var eventListStorage = JSON.parse(localStorage.getItem('events')) || [];
+    // initialize a new array
+    var eventList = [];
+    // collect data from the event container
+    var text = $(this).siblings('.time-block').text().trim();
+    var idCount = $(this).siblings('.time-block').attr('id');
+    // add the data to an object
+    var timeBlock = { text, idCount };
+    // add the object to the array
+    eventList.push(timeBlock);
+    // merge the data arrays
+    eventListStorage = eventListStorage.concat(eventList);
+    // save new data array to localStorage
+    localStorage.setItem('events', JSON.stringify(eventListStorage));
+});
+// END save on local storage
 
- $('.saveBtn').on('click', saveButton);
+// START load local storage
+var loadEvents = function () {
+    var eventListStorage = JSON.parse(localStorage.getItem('events')) || [];
+    for (let i = 0; i < eventListStorage.length; i++) {
+        var textEl = eventListStorage[i].text;
+        var id = '#' + eventListStorage[i].idCount;
+        $(id).children('p').text(textEl);
+    }
+};
+loadEvents();
+// END load local storage
 
-// end save on local storage
+// START auto-reload page
+setTimeout(function () {
+    window.location.reload(1);
+}, (1000*60)*15);
+// END auto-reload page 
