@@ -11,6 +11,7 @@ var idArr = ['#8', '#9', '#10', '#11', '#12', '#13', '#14', '#15', '#16', '#17']
 
     // declare current hour and format to same form as eventHour
 var currentHour = parseInt(moment().format('H'));
+
     // iterate thru all event blocks
 for (let i = 0; i < idArr.length; i++) {
     var findTB = $(idArr[i]);
@@ -88,7 +89,7 @@ var loadEvents = function () {
 
 // START auto-reload page
 setTimeout(function () {
-    window.location.reload(1);
+    window.location.reload();
 }, (1000 * 60) * 15);
 // END auto-reload page
 
@@ -96,6 +97,7 @@ setTimeout(function () {
 var clearEvents = function () {
     if (currentHour < 8 || currentHour > 17) {
         $('.textInput').text('');
+        localStorage.removeItem('events');
     }
 };
 // END clear events
